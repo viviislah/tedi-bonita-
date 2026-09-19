@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Wedding of Tedi Febriyana & Bonita Sari - Undangan Digital</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#0b1329',
+                        navyLight: '#162347',
+                        cream: '#fdfbf7',
+                        beige: '#f6f1e8',
+                        gold: '#d4af37',
+                        goldLight: '#f4e4b5',
+                        goldDark: '#aa8212'
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'Georgia', 'serif'],
+                        sans: ['"Poppins"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: #0b1329;
+            font-family: 'Poppins', sans-serif;
+            color: #0b1329;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+        
+        .app-container {
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background-color: #fdfbf7;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            overflow-x: hidden;
+        }
+
+        .glass-dark {
+            background: rgba(11, 19, 41, 0.78);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+        }
+
+        .glass-light {
+            background: rgba(253, 251, 247, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        .fade-in-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .spin-slow {
+            animation: spinSlow 9s linear infinite;
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #f6f1e8;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 4px;
+        }
+
+        .cover-wrapper {
+            transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1), filter 1.5s ease-in-out;
+            will-change: transform, opacity, filter;
+        }
+        .cover-wrapper.opening {
+            transform: scale(1.1) translateY(-3%);
+            opacity: 0;
+            filter: blur(15px);
+            pointer-events: none;
+        }
+
+        @keyframes heroReveal {
+            0% {
+                opacity: 0;
+                transform: scale(0.95) translateY(30px);
+                filter: blur(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+                filter: blur(0px);
+            }
+        }
+        .animate-hero-reveal {
+            animation: heroReveal 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes pulseGold {
+            0%, 100% {
+                box-shadow: 0 4px 20px rgba(212, 175, 55, 0.45);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 6px 32px rgba(212, 175, 55, 0.75), 0 0 14px rgba(255, 255, 255, 0.5);
+                transform: scale(1.02);
+            }
+        }
+        .pulse-gold {
+            animation: pulseGold 2.4s infinite ease-in-out;
+        }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            100% { transform: translateY(-70px) rotate(180deg); opacity: 0; }
+        }
+        .sparkle-dot {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #f4e4b5;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #d4af37;
+            animation: floatParticle 4s infinite ease-in-out;
+        }
+    </style>
+
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        window.firebaseApp = null;
+        window.firebaseDb = null;
+        window.firebaseAuth = null;
+        window.signInAnonymously = signInAnonymously;
+        window.collection = collection;
+        window.addDoc = addDoc;
+        window.onSnapshot = onSnapshot;
+        window.serverTimestamp = serverTimestamp;
+
+        try {
+            let config = null;
+            if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+                config = typeof __firebase_config === 'string' ? JSON.parse(__firebase_config) : __firebase_config;
+            }
+            if (config && config.apiKey && config.projectId && config.projectId.trim() !== '') {
+                setLogLevel('silent');
+                window.firebaseApp = initializeApp(config);
+                window.firebaseDb = getFirestore(window.firebaseApp);
+                window.firebaseAuth = getAuth(window.firebaseApp);
+            }
+        } catch (e) {
+            console.warn("Menggunakan mode penyimpanan lokal.");
+        }
+    </script>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        const WEDDING_DATE = new Date("2026-09-27T09:00:00").getTime();
+        const APP_ID = typeof __app_id !== 'undefined' ? __app_id : 'bonita-tedi-wedding';
+        
+        // Helper untuk menghasilkan URL gambar Google Drive yang stabil
+        const getDriveUrl = (id) => `https://lh3.googleusercontent.com/d/${id}`;
+        const getDriveFallbackUrl = (id) => `https://drive.google.com/thumbnail?id=${id}&sz=w1200`;
+
+        const BACKGROUND_DRIVE_ID = "196ET76KUeteVuU8VEgdOFuVtvypby6yr";
+        const GALLERY_PHOTOS = [
+            { id: "12TWmOloQ_b0E6ed2LaM1nCHsKMUX8YXQ", caption: "Momen Bahagia 1" },
+            { id: "16qgHejZ-2QQNSPEfdhjf-cqwlVtbKVNs", caption: "Momen Bahagia 2" },
+            { id: "196ET76KUeteVuU8VEgdOFuVtvypby6yr", caption: "Momen Bahagia 3" },
+            { id: "1EVPUQBWWPuYOOl64sTX6mZIJJ6hBFKrd", caption: "Momen Bahagia 4" },
+            { id: "1irhx74p8PE_mUI28ozV8i_Msw3LGW_jD", caption: "Momen Bahagia 5" }
+        ];
+
+        // Toast notification tanpa fungsi alert()
+        const showToast = (text) => {
+            const existing = document.getElementById('app-toast');
+            if (existing) existing.remove();
+            
+            const toast = document.createElement('div');
+            toast.id = 'app-toast';
+            toast.textContent = text;
+            toast.className = 'fixed bottom-20 left-1/2 -translate-x-1/2 z-[9999] bg-navy text-goldLight px-5 py-2.5 rounded-full text-xs font-sans shadow-2xl border border-gold/40 tracking-wide transition-all duration-300';
+            document.body.appendChild(toast);
+            
+            // Trigger reflow to ensure transition works
+            void toast.offsetWidth;
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        };
+
+        const Cover = ({ onOpen, guestName, isOpening }) => {
+            return (
+                <div className="relative w-full h-screen bg-navy text-cream flex flex-col justify-between items-center text-center px-6 py-12 overflow-hidden select-none">
+                    {/* Partikel Kilau Emas Mengambang */}
+                    <div className="absolute inset-0 pointer-events-none z-[5]">
+                        <div className="sparkle-dot top-1/4 left-1/5" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="sparkle-dot top-1/3 right-1/4" style={{ animationDelay: '1.5s' }}></div>
+                        <div className="sparkle-dot bottom-1/3 left-1/3" style={{ animationDelay: '2.8s' }}></div>
+                        <div className="sparkle-dot top-2/3 right-1/5" style={{ animationDelay: '0.9s' }}></div>
+                    </div>
+
+                    {/* Background Foto dengan Transparansi Lembut */}
+                    <div className="absolute inset-0 z-0">
+                        <img 
+                            src={getDriveUrl(BACKGROUND_DRIVE_ID)} 
+                            alt="Background Undangan" 
+                            className={`w-full h-full object-cover object-center opacity-40 transition-transform duration-1000 ${isOpening ? 'scale-110 brightness-110' : 'scale-105'}`}
+                            onError={(e) => {
+                                if (!e.target.dataset.triedFallback) {
+                                    e.target.dataset.triedFallback = "true";
+                                    e.target.src = getDriveFallbackUrl(BACKGROUND_DRIVE_ID);
+                                }
+                            }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-b from-navy/85 via-navy/60 to-navy"></div>
+                    </div>
+
+                    {/* Header Undangan */}
+                    <div className="relative z-10 pt-4">
+                        <p className="text-gold tracking-[0.35em] text-[11px] uppercase font-medium mb-3">
+                            The Wedding of
+                        </p>
+                        <h1 className="font-serif text-4xl sm:text-5xl leading-tight text-cream">
+                            Tedi Febriyana <span className="block text-2xl text-gold my-1 font-serif">&</span> Bonita Sari
+                        </h1>
+                    </div>
+
+                    {/* Kartu Penerima Undangan */}
+                    <div className="relative z-10 w-full max-w-sm glass-dark rounded-2xl p-6 shadow-2xl transition-transform duration-700">
+                        <p className="text-cream/80 text-xs tracking-wider mb-2 font-light">
+                            Kepada Yth. <br/> Bapak/Ibu/Saudara/i
+                        </p>
+                        <h2 className="font-serif text-2xl text-gold font-semibold mb-3 tracking-wide">
+                            {guestName}
+                        </h2>
+                        <p className="text-cream/70 text-[11px] italic mb-6 leading-relaxed">
+                            Tanpa mengurangi rasa hormat, kami mengundang Anda untuk hadir dalam momen istimewa kami.
+                        </p>
+
+                        <button 
+                            onClick={!isOpening ? onOpen : undefined}
+                            disabled={isOpening}
+                            className={`w-full bg-gradient-to-r from-gold to-goldDark text-navy font-semibold py-3.5 px-6 rounded-full pulse-gold hover:brightness-110 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 text-sm tracking-wide ${isOpening ? 'scale-95 opacity-90' : ''}`}
+                        >
+                            <i className={`fas ${isOpening ? 'fa-circle-notch fa-spin' : 'fa-envelope-open-text'} text-base`}></i> 
+                            {isOpening ? 'Membuka Undangan...' : 'Buka Undangan'}
+                        </button>
+                    </div>
+
+                    {/* Footer Cover */}
+                    <div className="relative z-10 text-[11px] text-cream/50 tracking-widest uppercase">
+                        Minggu, 27 September 2026
+                    </div>
+                </div>
+            );
+        };
+
+        const Hero = () => {
+            return (
+                <div className="relative min-h-[90vh] flex flex-col items-center justify-center text-center px-6 pt-16 pb-12 overflow-hidden bg-cream">
+                    {/* Background Hero */}
+                    <div className="absolute inset-0 z-0">
+                        <img 
+                            src={getDriveUrl(BACKGROUND_DRIVE_ID)} 
+                            alt="Cover Mempelai" 
+                            className="w-full h-full object-cover object-center opacity-30 filter contrast-105"
+                            onError={(e) => {
+                                if (!e.target.dataset.triedFallback) {
+                                    e.target.dataset.triedFallback = "true";
+                                    e.target.src = getDriveFallbackUrl(BACKGROUND_DRIVE_ID);
+                                }
+                            }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-b from-cream/60 via-cream/80 to-cream"></div>
+                </div>
+
+                    <div className="relative z-10 fade-in-section visible max-w-xs mx-auto">
+                        <span className="inline-block border border-gold/40 bg-white/70 px-4 py-1.5 rounded-full text-[11px] tracking-[0.25em] text-gold uppercase font-medium mb-6 backdrop-blur-sm">
+                            The Wedding
+                        </span>
+                        <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl text-navy leading-none mb-3">
+                            Tedi Febriyana
+                        </h1>
+                        <span className="block font-serif text-3xl text-gold my-2">&</span>
+                        <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl text-navy leading-none mb-6">
+                            Bonita Sari
+                        </h1>
+                        <div className="w-16 h-0.5 bg-gold mx-auto my-6"></div>
+                        <p className="font-sans text-navy/80 tracking-[0.2em] text-xs font-semibold uppercase">
+                            Minggu, 27 September 2026
+                        </p>
+                    </div>
+
+                    <div className="absolute bottom-6 z-10 animate-bounce text-gold/70">
+                        <i className="fas fa-chevron-down text-xl"></i>
+                    </div>
+                </div>
+            );
+        };
+
+        const Greeting = () => {
+            return (
+                <div className="py-20 px-6 text-center bg-cream relative">
+                    <div className="fade-in-section max-w-sm mx-auto">
+                        <div className="mb-6">
+                            <p className="font-serif text-xl text-gold font-medium mb-3">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+                            <p className="font-sans text-xs text-navy/70 leading-relaxed italic">
+                                "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya."
+                                <br/><span className="text-[10px] font-semibold text-navy/60 mt-1 block">(QS. Ar-Rum: 21)</span>
+                            </p>
+                        </div>
+
+                        <div className="w-12 h-px bg-gold/40 mx-auto my-8"></div>
+
+                        <h2 className="font-sans text-sm text-navy font-semibold uppercase tracking-wider mb-2">
+                            Assalamu'alaikum Wr. Wb.
+                        </h2>
+                        <p className="font-sans text-xs text-navy/70 leading-relaxed mb-10">
+                            Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami:
+                        </p>
+
+                        <div className="space-y-8">
+                            <div className="glass-light p-6 rounded-2xl shadow-sm border border-gold/20">
+                                <h3 className="font-serif text-3xl text-navy mb-1">Tedi Febriyana</h3>
+                                <p className="font-serif italic text-gold text-sm mb-3">Mempelai Pria</p>
+                                <p className="font-sans text-xs text-navy/70 leading-relaxed">
+                                    Putra kedua dari <br/>
+                                    <span className="font-semibold text-navy">Bpk. Ahmad Zunaedi & Ibu Rini Toriyah</span>
+                                </p>
+                            </div>
+
+                            <div className="font-serif text-3xl text-gold">&</div>
+
+                            <div className="glass-light p-6 rounded-2xl shadow-sm border border-gold/20">
+                                <h3 className="font-serif text-3xl text-navy mb-1">Bonita Sari</h3>
+                                <p className="font-serif italic text-gold text-sm mb-3">Mempelai Wanita</p>
+                                <p className="font-sans text-xs text-navy/70 leading-relaxed">
+                                    Putri kedua dari <br/>
+                                    <span className="font-semibold text-navy">Bpk. Bonani Efendi (Alm.) & Ibu Maryamah</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const EventDetails = () => {
+            const MAP_URL = "https://www.google.com/maps/place/6%C2%B017'04.3%22S+106%C2%B009'38.4%22E/@-6.2845255,106.1580873,17z/data=!3m1!4b1!4m4!3m3!8m2!3d-6.2845255!4d106.1606622?hl=id";
+            const EMBED_MAP_URL = "https://maps.google.com/maps?q=-6.2845255,106.1606622&hl=id&z=16&output=embed";
+
+            const handleOpenMaps = () => {
+                window.open(MAP_URL, "_blank");
+            };
+
+            return (
+                <div className="py-20 px-6 bg-beige relative">
+                    <div className="text-center mb-10 fade-in-section">
+                        <span className="text-gold tracking-[0.25em] text-[11px] uppercase font-semibold block mb-2">
+                            Waktu & Tempat
+                        </span>
+                        <h2 className="font-serif text-3xl text-navy">Detail Acara</h2>
+                    </div>
+
+                    <div className="bg-white rounded-3xl p-8 shadow-xl border border-gold/25 relative overflow-hidden fade-in-section max-w-sm mx-auto">
+                        <div className="text-center mb-8">
+                            <div className="w-14 h-14 bg-beige text-gold rounded-full flex items-center justify-center mx-auto mb-4 text-2xl shadow-inner border border-gold/20">
+                                <i className="far fa-calendar-check"></i>
+                            </div>
+                            <h3 className="font-serif text-2xl text-navy font-semibold mb-2">Akad & Resepsi</h3>
+                            <p className="font-sans text-goldDark font-semibold text-base">Minggu, 27 September 2026</p>
+                            <p className="font-sans text-navy/70 text-xs mt-1">Pukul 09.00 WIB s/d Selesai</p>
+                        </div>
+
+                        <div className="border-t border-dashed border-gold/30 my-6"></div>
+
+                        <div className="text-center">
+                            <div className="w-14 h-14 bg-beige text-gold rounded-full flex items-center justify-center mx-auto mb-4 text-2xl shadow-inner border border-gold/20">
+                                <i className="fas fa-map-marker-alt"></i>
+                            </div>
+                            <h4 className="font-serif text-lg text-navy font-semibold mb-2">Lokasi Acara</h4>
+                            <p className="font-sans text-xs text-navy/75 leading-relaxed mb-4 font-normal">
+                                Kp. Panjulan RT.05 RW.02, <br/>
+                                Desa Paniis, Kec. Koroncong, Kabupaten Pandeglang
+                            </p>
+
+                            {/* Pratinjau Peta Interaktif Langsung */}
+                            <div className="w-full h-44 rounded-2xl overflow-hidden border border-gold/30 shadow-inner mb-5 relative bg-slate-100">
+                                <iframe 
+                                    src={EMBED_MAP_URL}
+                                    width="100%" 
+                                    height="100%" 
+                                    style={{ border: 0 }} 
+                                    allowFullScreen="" 
+                                    loading="lazy" 
+                                    referrerPolicy="no-referrer-when-downgrade"
+                                    title="Peta Lokasi Pernikahan Tedi & Bonita"
+                                ></iframe>
+                            </div>
+
+                            <button 
+                                onClick={handleOpenMaps}
+                                className="w-full bg-navy hover:bg-navyLight text-white font-sans text-xs font-semibold py-3.5 px-6 rounded-full shadow-lg transition-all flex items-center justify-center gap-2 tracking-wide hover:shadow-gold/30"
+                            >
+                                <i className="fas fa-location-arrow text-gold"></i> BUKA GOOGLE MAPS
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const Countdown = () => {
+            const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+
+            useEffect(() => {
+                const calculateDistance = () => {
+                    const now = new Date().getTime();
+                    const difference = WEDDING_DATE - now;
+
+                    if (difference <= 0) {
+                        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+                        return;
+                    }
+
+                    setTimeLeft({
+                        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+                        hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+                        minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+                        seconds: Math.floor((difference % (1000 * 60)) / 1000)
+                    });
+                };
+
+                calculateDistance();
+                const interval = setInterval(calculateDistance, 1000);
+                return () => clearInterval(interval);
+            }, []);
+
+            return (
+                <div className="py-16 px-6 bg-navy text-cream text-center relative overflow-hidden">
+                    <div className="relative z-10 fade-in-section max-w-sm mx-auto">
+                        <p className="text-gold tracking-[0.25em] text-[11px] uppercase font-medium mb-2">
+                            Hitung Mundur
+                        </p>
+                        <h2 className="font-serif text-3xl text-cream mb-8">Menuju Hari Bahagia</h2>
+
+                        <div className="grid grid-cols-4 gap-2">
+                            {[
+                                { val: timeLeft.days, label: "Hari" },
+                                { val: timeLeft.hours, label: "Jam" },
+                                { val: timeLeft.minutes, label: "Menit" },
+                                { val: timeLeft.seconds, label: "Detik" }
+                            ].map((item, idx) => (
+                                <div key={idx} className="bg-navyLight/80 border border-gold/30 rounded-xl p-3 shadow-lg backdrop-blur-sm">
+                                    <span className="block font-serif text-2xl font-bold text-goldLight">
+                                        {String(item.val).padStart(2, '0')}
+                                    </span>
+                                    <span className="block text-[10px] text-cream/70 uppercase tracking-wider mt-1 font-sans">
+                                        {item.label}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const Gallery = () => {
+            const [selectedPhoto, setSelectedPhoto] = useState(null);
+
+            return (
+                <div className="py-20 px-4 bg-cream relative">
+                    <div className="text-center mb-10 fade-in-section">
+                        <span className="text-gold tracking-[0.25em] text-[11px] uppercase font-semibold block mb-2">
+                            Dokumentasi Cinta
+                        </span>
+                        <h2 className="font-serif text-3xl text-navy">Galeri Foto</h2>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3 max-w-sm mx-auto fade-in-section">
+                        {GALLERY_PHOTOS.map((photo, index) => {
+                            const isFirst = index === 0;
+                            return (
+                                <div 
+                                    key={photo.id}
+                                    onClick={() => setSelectedPhoto(getDriveUrl(photo.id))}
+                                    className={`relative rounded-2xl overflow-hidden shadow-md cursor-pointer group bg-beige border border-gold/20 ${isFirst ? 'col-span-2 aspect-[16/10]' : 'aspect-square'}`}
+                                >
+                                    <img 
+                                        src={getDriveUrl(photo.id)} 
+                                        alt={photo.caption} 
+                                        loading="lazy"
+                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                        onError={(e) => {
+                                            if (!e.target.dataset.triedFallback) {
+                                                e.target.dataset.triedFallback = "true";
+                                                e.target.src = getDriveFallbackUrl(photo.id);
+                                            }
+                                        }}
+                                    />
+                                    <div className="absolute inset-0 bg-navy/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <div className="w-10 h-10 rounded-full bg-white/80 text-navy flex items-center justify-center text-sm shadow">
+                                            <i className="fas fa-search-plus text-gold"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    {/* Lightbox Modal */}
+                    {selectedPhoto && (
+                        <div 
+                            className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md flex items-center justify-center p-4"
+                            onClick={() => setSelectedPhoto(null)}
+                        >
+                            <button 
+                                className="absolute top-6 right-6 text-white text-2xl w-10 h-10 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/40 transition-colors"
+                                onClick={() => setSelectedPhoto(null)}
+                            >
+                                <i className="fas fa-times"></i>
+                            </button>
+                            <img 
+                                src={selectedPhoto} 
+                                alt="Perbesar Foto" 
+                                className="max-w-full max-h-[85vh] rounded-xl shadow-2xl object-contain" 
+                            />
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const RSVP = () => {
+            const [formData, setFormData] = useState({ name: '', status: 'Hadir', guests: '1', message: '' });
+            const [submitting, setSubmitting] = useState(false);
+            const [submitted, setSubmitted] = useState(false);
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                if (!formData.name.trim()) return;
+
+                setSubmitting(true);
+                const newRecord = {
+                    id: 'rsvp_' + Date.now(),
+                    name: formData.name.trim(),
+                    status: formData.status,
+                    guests: formData.guests,
+                    message: formData.message.trim(),
+                    timestamp: new Date().toISOString()
+                };
+
+                // Simpan ke localStorage secara instan
+                try {
+                    const saved = JSON.parse(localStorage.getItem('bonita_tedi_rsvps') || '[]');
+                    saved.unshift(newRecord);
+                    localStorage.setItem('bonita_tedi_rsvps', JSON.stringify(saved));
+                } catch (err) {
+                    console.warn("Penyimpanan lokal terbatas:", err);
+                }
+
+                // Sinkronisasi dengan Firebase jika database aktif
+                if (window.firebaseDb && window.firebaseAuth) {
+                    try {
+                        let user = window.firebaseAuth.currentUser;
+                        if (!user) {
+                            const cred = await window.signInAnonymously(window.firebaseAuth);
+                            user = cred.user;
+                        }
+                        const colRef = window.collection(window.firebaseDb, 'artifacts', APP_ID, 'public', 'data', 'rsvps');
+                        await window.addDoc(colRef, {
+                            ...newRecord,
+                            timestamp: window.serverTimestamp()
+                        });
+                    } catch (e) {
+                        // Data tetap aman di localStorage
+                    }
+                }
+
+                setSubmitting(false);
+                setSubmitted(true);
+            };
+
+            return (
+                <div className="py-20 px-6 bg-beige relative">
+                    <div className="max-w-sm mx-auto bg-white rounded-3xl p-8 shadow-xl border border-gold/25 fade-in-section">
+                        <div className="text-center mb-8">
+                            <span className="text-gold tracking-[0.25em] text-[11px] uppercase font-semibold block mb-2">
+                                Reservasi
+                            </span>
+                            <h2 className="font-serif text-3xl text-navy">Konfirmasi Kehadiran</h2>
+                            <p className="font-sans text-xs text-navy/60 mt-2">
+                                Mohon konfirmasi kehadiran Anda demi kelancaran persiapan acara.
+                            </p>
+                        </div>
+
+                        {submitted ? (
+                            <div className="text-center py-6">
+                                <div className="w-16 h-16 bg-green-50 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl border border-green-200">
+                                    <i className="fas fa-check"></i>
+                                </div>
+                                <h3 className="font-serif text-xl text-navy mb-2">Terima Kasih</h3>
+                                <p className="font-sans text-xs text-navy/70">
+                                    Konfirmasi kehadiran Anda telah berhasil tersimpan.
+                                </p>
+                            </div>
+                        ) : (
+                            <form onSubmit={handleSubmit} className="space-y-4 text-left">
+                                <div>
+                                    <label className="block text-xs font-medium text-navy/80 mb-1 ml-1">Nama Lengkap</label>
+                                    <input 
+                                        type="text" 
+                                        required 
+                                        placeholder="Tulis nama Anda"
+                                        className="w-full bg-beige/50 border border-gold/30 rounded-xl px-4 py-3 text-xs text-navy focus:outline-none focus:border-gold transition-colors"
+                                        value={formData.name}
+                                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-xs font-medium text-navy/80 mb-1 ml-1">Konfirmasi Kehadiran</label>
+                                    <select 
+                                        className="w-full bg-beige/50 border border-gold/30 rounded-xl px-4 py-3 text-xs text-navy focus:outline-none focus:border-gold transition-colors"
+                                        value={formData.status}
+                                        onChange={(e) => setFormData({...formData, status: e.target.value})}
+                                    >
+                                        <option value="Hadir">Hadir</option>
+                                        <option value="Tidak Hadir">Tidak Hadir</option>
+                                        <option value="Masih Ragu">Masih Ragu</option>
+                                    </select>
+                                </div>
+
+                                {formData.status === 'Hadir' && (
+                                    <div>
+                                        <label className="block text-xs font-medium text-navy/80 mb-1 ml-1">Jumlah Tamu</label>
+                                        <select 
+                                            className="w-full bg-beige/50 border border-gold/30 rounded-xl px-4 py-3 text-xs text-navy focus:outline-none focus:border-gold transition-colors"
+                                            value={formData.guests}
+                                            onChange={(e) => setFormData({...formData, guests: e.target.value})}
+                                        >
+                                            <option value="1">1 Orang</option>
+                                            <option value="2">2 Orang</option>
+                                        </select>
+                                    </div>
+                                )}
+
+                                <div>
+                                    <label className="block text-xs font-medium text-navy/80 mb-1 ml-1">Catatan / Pesan</label>
+                                    <textarea 
+                                        rows="3"
+                                        placeholder="Pesan tambahan (opsional)"
+                                        className="w-full bg-beige/50 border border-gold/30 rounded-xl px-4 py-3 text-xs text-navy focus:outline-none focus:border-gold resize-none transition-colors"
+                                        value={formData.message}
+                                        onChange={(e) => setFormData({...formData, message: e.target.value})}
+                                    ></textarea>
+                                </div>
+
+                                <button 
+                                    type="submit" 
+                                    disabled={submitting}
+                                    className="w-full bg-gradient-to-r from-gold to-goldDark text-navy font-semibold py-3.5 px-6 rounded-full shadow-lg hover:brightness-110 active:scale-95 transition-all text-xs tracking-wide mt-4 flex items-center justify-center"
+                                >
+                                    {submitting ? 'Mengirim...' : 'KIRIM KONFIRMASI'}
+                                </button>
+                            </form>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        const Wishes = () => {
+            const [wishes, setWishes] = useState(() => {
+                try {
+                    const saved = localStorage.getItem('bonita_tedi_messages');
+                    if (saved) {
+                        const parsed = JSON.parse(saved);
+                        return parsed.filter(w => w.id !== '1' && w.id !== '2' && w.id !== '3');
+                    }
+                    return [];
+                } catch(e) {
+                    return [];
+                }
+            });
+            const [name, setName] = useState('');
+            const [message, setMessage] = useState('');
+            const [loading, setLoading] = useState(false);
+
+            const handleSendWish = async (e) => {
+                e.preventDefault();
+                if (!name.trim() || !message.trim()) return;
+
+                setLoading(true);
+                const newWish = {
+                    id: 'wish_' + Date.now(),
+                    name: name.trim(),
+                    message: message.trim()
+                };
+
+                const updated = [newWish, ...wishes];
+                setWishes(updated);
+                try {
+                    localStorage.setItem('bonita_tedi_messages', JSON.stringify(updated));
+                } catch(e) {}
+
+                if (window.firebaseDb && window.firebaseAuth) {
+                    try {
+                        let user = window.firebaseAuth.currentUser;
+                        if (!user) {
+                            const cred = await window.signInAnonymously(window.firebaseAuth);
+                            user = cred.user;
+                        }
+                        const colRef = window.collection(window.firebaseDb, 'artifacts', APP_ID, 'public', 'data', 'messages');
+                        await window.addDoc(colRef, {
+                            name: newWish.name,
+                            message: newWish.message,
+                            timestamp: window.serverTimestamp()
+                        });
+                    } catch(err) {}
+                }
+
+                setName('');
+                setMessage('');
+                setLoading(false);
+                showToast("Ucapan & doa berhasil dikirimkan!");
+            };
+
+            return (
+                <div className="py-20 px-6 bg-cream relative border-t border-gold/15">
+                    <div className="max-w-sm mx-auto">
+                        <div className="text-center mb-8 fade-in-section">
+                            <span className="text-gold tracking-[0.25em] text-[11px] uppercase font-semibold block mb-2">
+                                Doa Restu
+                            </span>
+                            <h2 className="font-serif text-3xl text-navy">Ucapan & Doa</h2>
+                            <p className="font-sans text-xs text-navy/60 mt-2">
+                                Tuliskan doa serta harapan terbaik Anda untuk kedua mempelai.
+                            </p>
+                        </div>
+
+                        <form onSubmit={handleSendWish} className="bg-white p-6 rounded-2xl shadow-md border border-gold/20 mb-8 fade-in-section">
+                            <input 
+                                type="text" 
+                                required 
+                                placeholder="Nama Anda"
+                                className="w-full mb-3 bg-beige/40 border border-gold/25 rounded-xl px-4 py-2.5 text-xs text-navy focus:outline-none focus:border-gold"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                            <textarea 
+                                required 
+                                rows="3" 
+                                placeholder="Tuliskan doa & harapan terbaik..."
+                                className="w-full mb-4 bg-beige/40 border border-gold/25 rounded-xl px-4 py-2.5 text-xs text-navy focus:outline-none focus:border-gold resize-none"
+                                value={message}
+                                onChange={(e) => setMessage(e.target.value)}
+                            ></textarea>
+                            <button 
+                                type="submit" 
+                                disabled={loading}
+                                className="w-full bg-navy hover:bg-navyLight text-white font-sans text-xs font-semibold py-3 rounded-xl shadow transition-all tracking-wide flex justify-center"
+                            >
+                                {loading ? 'Mengirim...' : 'Kirim Ucapan'}
+                            </button>
+                        </form>
+
+                        <div className="space-y-3 max-h-80 overflow-y-auto pr-1 custom-scroll fade-in-section">
+                            {wishes.length === 0 ? (
+                                <div className="bg-white/60 p-6 rounded-xl text-center text-xs text-navy/60 italic border border-dashed border-gold/30">
+                                    Belum ada ucapan. Jadilah yang pertama memberikan doa restu untuk kedua mempelai.
+                                </div>
+                            ) : (
+                                wishes.map((w) => (
+                                    <div key={w.id} className="bg-white p-4 rounded-xl shadow-sm border border-gold/15">
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <i className="fas fa-heart text-gold text-[10px]"></i>
+                                            <h4 className="font-sans font-semibold text-navy text-xs">{w.name}</h4>
+                                        </div>
+                                        <p className="font-sans text-xs text-navy/75 leading-relaxed pl-4">
+                                            "{w.message}"
+                                        </p>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const WeddingGift = () => {
+            const handleCopy = (num, platform) => {
+                const temp = document.createElement('input');
+                temp.value = num;
+                document.body.appendChild(temp);
+                temp.select();
+                document.execCommand('copy');
+                document.body.removeChild(temp);
+                showToast(`Nomor ${platform} berhasil disalin!`);
+            };
+
+            return (
+                <div className="py-20 px-6 bg-beige relative">
+                    <div className="max-w-sm mx-auto text-center fade-in-section">
+                        <span className="text-gold tracking-[0.25em] text-[11px] uppercase font-semibold block mb-2">
+                            Tanda Kasih
+                        </span>
+                        <h2 className="font-serif text-3xl text-navy mb-4">Amplop Digital</h2>
+                        <p className="font-sans text-xs text-navy/70 leading-relaxed mb-8">
+                            Doa restu Anda merupakan karunia terindah bagi kami. Namun jika ingin memberikan tanda kasih secara digital, dapat melalui dompet digital berikut:
+                        </p>
+
+                        <div className="space-y-4">
+                            <div className="bg-white p-6 rounded-2xl shadow-md border border-gold/25 relative overflow-hidden">
+                                <div className="flex justify-between items-center mb-3">
+                                    <div className="flex items-center gap-2">
+                                        <span className="font-sans font-bold text-base text-navy tracking-wider">DANA</span>
+                                        <span className="text-[10px] bg-sky-100 text-sky-700 font-semibold px-2 py-0.5 rounded-full">Dompet Digital</span>
+                                    </div>
+                                    <i className="fas fa-wallet text-gold text-lg"></i>
+                                </div>
+                                <p className="font-mono text-lg font-bold text-navy tracking-widest mb-1">0896 3072 7208</p>
+                                <p className="text-xs text-navy/60 mb-4">a.n. Tedi Febriyana / Bonita Sari</p>
+                                <button 
+                                    onClick={() => handleCopy('089630727208', 'DANA')}
+                                    className="bg-navy hover:bg-navyLight text-white text-xs font-semibold py-2.5 px-6 rounded-full inline-flex items-center gap-2 shadow transition-all"
+                                >
+                                    <i className="far fa-copy text-gold"></i> Salin Nomor DANA
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const Footer = ({ onOpenAdmin }) => {
+            const currentUrl = window.location.href;
+            const messageText = "Halo, saya mengundang Anda untuk menghadiri Acara Pernikahan Tedi Febriyana & Bonita Sari. Silakan buka undangan melalui link berikut: " + currentUrl;
+
+            const handleShareWA = () => {
+                window.open(`https://wa.me/?text=${encodeURIComponent(messageText)}`, '_blank');
+            };
+
+            const handleShareTelegram = () => {
+                window.open(`https://t.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent("The Wedding of Tedi Febriyana & Bonita Sari")}`, '_blank');
+            };
+
+            const handleCopyLink = () => {
+                const temp = document.createElement('input');
+                temp.value = currentUrl;
+                document.body.appendChild(temp);
+                temp.select();
+                document.execCommand('copy');
+                document.body.removeChild(temp);
+                showToast("Tautan undangan berhasil disalin!");
+            };
+
+            return (
+                <div className="bg-navy py-16 px-6 text-center text-cream relative">
+                    <div className="max-w-sm mx-auto fade-in-section">
+                        <h3 className="font-serif text-3xl text-cream mb-2">Tedi Febriyana & Bonita Sari</h3>
+                        <p className="font-sans text-xs text-cream/70 leading-relaxed mb-8">
+                            Atas kehadiran dan doa restu Bapak/Ibu/Saudara/i sekalian, kami mengucapkan terima kasih yang tulus.
+                        </p>
+
+                        <div className="flex justify-center gap-3 mb-10">
+                            <button 
+                                onClick={handleShareWA}
+                                className="w-11 h-11 rounded-full bg-white/10 hover:bg-gold hover:text-navy text-cream flex items-center justify-center transition-all shadow"
+                                title="Bagi ke WhatsApp"
+                            >
+                                <i className="fab fa-whatsapp text-lg"></i>
+                            </button>
+                            <button 
+                                onClick={handleShareTelegram}
+                                className="w-11 h-11 rounded-full bg-white/10 hover:bg-gold hover:text-navy text-cream flex items-center justify-center transition-all shadow"
+                                title="Bagi ke Telegram"
+                            >
+                                <i className="fab fa-telegram-plane text-lg"></i>
+                            </button>
+                            <button 
+                                onClick={handleCopyLink}
+                                className="w-11 h-11 rounded-full bg-white/10 hover:bg-gold hover:text-navy text-cream flex items-center justify-center transition-all shadow"
+                                title="Salin Link"
+                            >
+                                <i className="fas fa-link text-base"></i>
+                            </button>
+                        </div>
+
+                        <div className="border-t border-white/10 pt-6">
+                            <p className="font-sans text-[11px] text-cream/40">
+                                UNDANGAN DIGITAL • "Satu Link, Satu Undangan, Lebih Berkesan"
+                            </p>
+                            <button 
+                                onClick={onOpenAdmin}
+                                className="text-[11px] text-gold/70 hover:text-gold inline-flex items-center gap-1.5 mt-2.5 transition-colors cursor-pointer"
+                            >
+                                <i className="fas fa-lock text-[9px]"></i> Akses Dashboard Admin
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const FloatingAudio = ({ isPlaying, onToggle, currentTrack, onNextTrack }) => {
+            return (
+                <div className="fixed bottom-6 right-6 z-50 md:right-[calc(50%-240px+24px)] flex items-center gap-2">
+                    {/* Label Judul Musik yang Sedang Berputar */}
+                    {isPlaying && currentTrack && (
+                        <div className="bg-navy/90 border border-gold/40 text-goldLight text-[10px] px-3 py-1.5 rounded-full shadow-lg backdrop-blur-md hidden sm:flex items-center gap-1.5 max-w-[190px] truncate animate-pulse">
+                            <i className="fas fa-music text-gold text-[9px]"></i>
+                            <span className="truncate">{currentTrack.title}</span>
+                        </div>
+                    )}
+
+                    <div className="relative flex items-center gap-1.5">
+                        <button 
+                            onClick={onToggle}
+                            className={`w-12 h-12 rounded-full bg-gradient-to-r from-gold to-goldDark text-navy shadow-2xl flex items-center justify-center backdrop-blur-md border border-white/40 transition-transform active:scale-90 ${isPlaying ? 'spin-slow' : ''}`}
+                            title={isPlaying ? "Jeda Musik" : "Putar Musik"}
+                        >
+                            <i className={`fas ${isPlaying ? 'fa-compact-disc' : 'fa-play'} text-xl`}></i>
+                        </button>
+
+                        {onNextTrack && (
+                            <button
+                                onClick={onNextTrack}
+                                className="w-8 h-8 rounded-full bg-navy/85 hover:bg-navy text-goldLight border border-gold/30 flex items-center justify-center text-xs shadow-md transition-all active:scale-90 hover:scale-105"
+                                title="Ganti ke Lagu Berikutnya"
+                            >
+                                <i className="fas fa-forward-step text-[11px] text-gold"></i>
+                            </button>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        const AdminDashboard = ({ onBack }) => {
+            const [targetGuest, setTargetGuest] = useState('');
+            const [targetPhone, setTargetPhone] = useState('');
+            const [copied, setCopied] = useState(false);
+            const [showContactModal, setShowContactModal] = useState(false);
+
+            const [savedContacts, setSavedContacts] = useState(() => {
+                try {
+                    const saved = localStorage.getItem('bonita_tedi_saved_contacts');
+                    return saved ? JSON.parse(saved) : [
+                        { name: "Keluarga Besar Bpk. Ahmad", phone: "081234567890" },
+                        { name: "Ibu Hjh. Siti & Suami", phone: "085712345678" },
+                        { name: "Sahabat Rian Pratama", phone: "089612345678" }
+                    ];
+                } catch (e) {
+                    return [];
+                }
+            });
+
+            // Fungsi untuk mengambil kontak dari buku telepon ponsel
+            const handlePickContact = async () => {
+                const isSupported = ('contacts' in navigator && 'ContactsManager' in window);
+                if (isSupported) {
+                    try {
+                        const props = ['name', 'tel'];
+                        const contacts = await navigator.contacts.select(props, { multiple: false });
+                        if (contacts && contacts.length > 0) {
+                            const c = contacts[0];
+                            if (c.tel && c.tel.length > 0) {
+                                const rawTel = c.tel[0].replace(/[^0-9+]/g, '');
+                                setTargetPhone(rawTel);
+                            }
+                            if (c.name && c.name.length > 0 && !targetGuest.trim()) {
+                                setTargetGuest(c.name[0]);
+                            }
+                            showToast("Kontak ponsel berhasil dipilih!");
+                            return;
+                        }
+                    } catch (err) {
+                        console.log("Contact pick cancelled/unsupported:", err);
+                    }
+                }
+                // Jika dibuka di browser desktop/browser tanpa native picker, buka buku kontak cepat
+                setShowContactModal(true);
+            };
+
+            const handleSelectSavedContact = (contact) => {
+                setTargetGuest(contact.name);
+                setTargetPhone(contact.phone);
+                setShowContactModal(false);
+                showToast(`Kontak ${contact.name} dipilih!`);
+            };
+
+            const handleSaveCurrentContact = () => {
+                if (!targetGuest.trim() && !targetPhone.trim()) {
+                    showToast("Isi nama atau nomor terlebih dahulu!");
+                    return;
+                }
+                const newContact = {
+                    id: 'c_' + Date.now(),
+                    name: targetGuest.trim() || 'Tamu Undangan',
+                    phone: targetPhone.trim()
+                };
+                const updated = [newContact, ...savedContacts.filter(c => c.phone !== newContact.phone)];
+                setSavedContacts(updated);
+                try {
+                    localStorage.setItem('bonita_tedi_saved_contacts', JSON.stringify(updated));
+                } catch(e) {}
+                showToast("Kontak disimpan ke buku kontak!");
+            };
+
+            const handleDeleteSavedContact = (idx) => {
+                const updated = savedContacts.filter((_, i) => i !== idx);
+                setSavedContacts(updated);
+                try {
+                    localStorage.setItem('bonita_tedi_saved_contacts', JSON.stringify(updated));
+                } catch(e) {}
+            };
+
+            // Preset musik pernikahan romantis
+            const MUSIC_OPTIONS = [
+                {
+                    id: 'thousand_years',
+                    title: 'A Thousand Years - Piano & Cello (The Piano Guys)',
+                    url: 'https://archive.org/download/20-piano-guys-lord-of-the-rings-the-hobbit/20%20Piano%20Guys%20-%20Christina%20Perri%20-%20A%20Thousand%20Years.mp3'
+                },
+                {
+                    id: 'canon_in_d',
+                    title: 'Canon in D Major - Johann Pachelbel (Klasik Elegan)',
+                    url: 'https://archive.org/download/CanonInD_201705/CanonInD.mp3'
+                },
+                {
+                    id: 'romantic_piano',
+                    title: 'Romantic Piano & Strings (Syahdu & Hangat)',
+                    url: 'https://archive.org/download/soundcloud-382924121/Romantic_Piano_Wedding_Background_Music_For_Videos__Films.mp3'
+                },
+                {
+                    id: 'gdrive_custom',
+                    title: 'Link Google Drive Pribadi (ID: 1GXj9ifO5hqgk4LP1VHeUBvLEXFWfvbnU)',
+                    url: 'https://drive.google.com/uc?export=download&id=1GXj9ifO5hqgk4LP1VHeUBvLEXFWfvbnU'
+                }
+            ];
+
+            const [selectedMusicUrl, setSelectedMusicUrl] = useState(() => {
+                return localStorage.getItem('bonita_tedi_custom_music_url') || MUSIC_OPTIONS[0].url;
+            });
+            const [previewAudio, setPreviewAudio] = useState(null);
+            const [previewingUrl, setPreviewingUrl] = useState(null);
+
+            const [rsvps] = useState(() => {
+                try {
+                    const local = JSON.parse(localStorage.getItem('bonita_tedi_rsvps') || '[]');
+                    if (local.length > 0) return local;
+                } catch(e) {}
+                return [
+                    { id: '1', name: 'Bapak H. Ahmad', status: 'Hadir', guests: '2' },
+                    { id: '2', name: 'Ibu Rahmawati', status: 'Hadir', guests: '1' },
+                    { id: '3', name: 'Budi Santoso', status: 'Tidak Hadir', guests: '0' }
+                ];
+            });
+
+            const hadirCount = rsvps.filter(r => r.status === 'Hadir').length;
+            const tidakHadirCount = rsvps.filter(r => r.status === 'Tidak Hadir').length;
+            const raguCount = rsvps.filter(r => r.status === 'Masih Ragu').length;
+
+            const baseUrl = window.location.origin + window.location.pathname;
+            const generatedLink = targetGuest.trim() 
+                ? `${baseUrl}?nama=${encodeURIComponent(targetGuest.trim())}`
+                : `${baseUrl}?nama=Nama+Tamu`;
+
+            const whatsappMessage = `Kepada Yth. Bapak/Ibu/Saudara/i\n*${targetGuest.trim() || 'Tamu Undangan'}*\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Anda untuk hadir dalam momen istimewa pernikahan kami:\n\n*The Wedding of Tedi Febriyana & Bonita Sari*\n📅 Minggu, 27 September 2026\n\nUntuk informasi lengkap acara dan konfirmasi kehadiran, silakan buka tautan undangan digital berikut:\n${generatedLink}\n\nMerupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.\n\nTerima kasih.`;
+
+            const handleCopyLink = () => {
+                const temp = document.createElement('input');
+                temp.value = generatedLink;
+                document.body.appendChild(temp);
+                temp.select();
+                document.execCommand('copy');
+                document.body.removeChild(temp);
+                setCopied(true);
+                showToast("Tautan undangan berhasil disalin!");
+                setTimeout(() => setCopied(false), 2000);
+            };
+
+            const handleSendWhatsApp = () => {
+                let cleanPhone = targetPhone.replace(/[^0-9]/g, '');
+                if (cleanPhone.startsWith('0')) {
+                    cleanPhone = '62' + cleanPhone.slice(1);
+                }
+                const waUrl = cleanPhone 
+                    ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(whatsappMessage)}`
+                    : `https://wa.me/?text=${encodeURIComponent(whatsappMessage)}`;
+                window.open(waUrl, '_blank');
+            };
+
+            const handleSaveMusic = (url, title) => {
+                localStorage.setItem('bonita_tedi_custom_music_url', url);
+                localStorage.setItem('bonita_tedi_custom_music_title', title);
+                setSelectedMusicUrl(url);
+                showToast("Musik pernikahan berhasil diperbarui!");
+            };
+
+            const handleTogglePreview = (url) => {
+                if (previewAudio && previewingUrl === url) {
+                    previewAudio.pause();
+                    setPreviewAudio(null);
+                    setPreviewingUrl(null);
+                    return;
+                }
+                if (previewAudio) {
+                    previewAudio.pause();
+                }
+                const audio = new Audio(url);
+                audio.play().then(() => {
+                    setPreviewAudio(audio);
+                    setPreviewingUrl(url);
+                }).catch(() => {
+                    showToast("Gagal memutar cuplikan musik.");
+                });
+                audio.onended = () => {
+                    setPreviewAudio(null);
+                    setPreviewingUrl(null);
+                };
+            };
+
+            const handleReturn = () => {
+                if (previewAudio) {
+                    previewAudio.pause();
+                }
+                if (window.history.replaceState) {
+                    window.history.replaceState({}, '', window.location.pathname);
+                }
+                onBack();
+            };
+
+            return (
+                <div className="min-h-screen bg-slate-900 text-slate-100 p-6 font-sans">
+                    <div className="max-w-4xl mx-auto">
+                        <div className="flex flex-wrap justify-between items-center border-b border-slate-800 pb-4 mb-6 gap-3">
+                            <div>
+                                <h1 className="font-serif text-2xl text-gold font-bold">Dashboard Admin Undangan</h1>
+                                <p className="text-xs text-slate-400">Pernikahan Tedi Febriyana & Bonita Sari</p>
+                            </div>
+                            <div className="flex gap-2">
+                                <button 
+                                    onClick={handleReturn}
+                                    className="bg-gold hover:bg-goldLight text-navy text-xs font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-1.5 shadow"
+                                >
+                                    <i className="fas fa-arrow-left"></i> Kembali ke Undangan
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Kartu Panduan Praktis 3 Langkah */}
+                        <div className="bg-gradient-to-r from-gold/15 to-navy border border-gold/40 rounded-2xl p-5 mb-8 shadow-xl">
+                            <h2 className="text-sm font-bold text-gold flex items-center gap-2 mb-3">
+                                <i className="fas fa-lightbulb text-gold"></i> Panduan Praktis Kirim Undangan (3 Langkah Mudah)
+                            </h2>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                                <div className="bg-slate-900/80 p-3.5 rounded-xl border border-slate-700/80">
+                                    <span className="w-6 h-6 rounded-full bg-gold text-navy font-bold text-xs inline-flex items-center justify-center mb-2">1</span>
+                                    <p className="font-semibold text-slate-200 mb-1">Ketik Nama Tamu</p>
+                                    <p className="text-slate-400 text-[11px] leading-relaxed">Tulis nama tamu atau gunakan tombol cepat (+ Bpk, + Ibu, & Keluarga).</p>
+                                </div>
+                                <div className="bg-slate-900/80 p-3.5 rounded-xl border border-slate-700/80">
+                                    <span className="w-6 h-6 rounded-full bg-gold text-navy font-bold text-xs inline-flex items-center justify-center mb-2">2</span>
+                                    <p className="font-semibold text-slate-200 mb-1">Klik Kirim WhatsApp</p>
+                                    <p className="text-slate-400 text-[11px] leading-relaxed">Tekan tombol hijau WhatsApp. Teks undangan & link tamu otomatis terisi rapi.</p>
+                                </div>
+                                <div className="bg-slate-900/80 p-3.5 rounded-xl border border-slate-700/80">
+                                    <span className="w-6 h-6 rounded-full bg-gold text-navy font-bold text-xs inline-flex items-center justify-center mb-2">3</span>
+                                    <p className="font-semibold text-slate-200 mb-1">Tamu Menerima Undangan</p>
+                                    <p className="text-slate-400 text-[11px] leading-relaxed">Saat tamu klik link, nama mereka langsung tertulis di kartu sampul depan!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {}
+                        {/* Generator Link Tamu & WhatsApp Rapi */}
+                        <div className="bg-slate-800/90 border border-gold/30 rounded-2xl p-6 mb-8 shadow-xl">
+                            <div className="flex items-center gap-2 mb-2">
+                                <i className="fas fa-magic text-gold text-lg"></i>
+                                <h2 className="text-base font-semibold text-gold">Generator Link Tamu & Kirim WhatsApp</h2>
+                            </div>
+                            <p className="text-xs text-slate-400 mb-5 leading-relaxed">
+                                Buat link undangan personal dengan nama tamu secara otomatis. Anda bisa langsung membagikannya ke WhatsApp dengan pesan formal yang siap kirim.
+                            </p>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label className="block text-xs font-medium text-slate-300 mb-1">
+                                        Nama Tamu / Pasangan / Keluarga <span className="text-gold">*</span>
+                                    </label>
+                                    <input 
+                                        type="text"
+                                        placeholder="Contoh: Joko Widodo & Keluarga"
+                                        value={targetGuest}
+                                        onChange={(e) => setTargetGuest(e.target.value)}
+                                        className="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-gold"
+                                    />
+                                    {/* Tombol Cepat Format Nama */}
+                                    <div className="flex flex-wrap gap-1.5 mt-2.5">
+                                        <button 
+                                            type="button" 
+                                            onClick={() => setTargetGuest((prev) => prev ? `Bpk. ${prev}` : 'Bpk. ')}
+                                            className="px-2.5 py-1 bg-slate-900 hover:bg-slate-700 text-[10px] text-goldLight rounded-lg border border-slate-700 transition-colors"
+                                        >
+                                            + Bpk.
+                                        </button>
+                                        <button 
+                                            type="button" 
+                                            onClick={() => setTargetGuest((prev) => prev ? `Ibu ${prev}` : 'Ibu ')}
+                                            className="px-2.5 py-1 bg-slate-900 hover:bg-slate-700 text-[10px] text-goldLight rounded-lg border border-slate-700 transition-colors"
+                                        >
+                                            + Ibu
+                                        </button>
+                                        <button 
+                                            type="button" 
+                                            onClick={() => setTargetGuest((prev) => prev ? `${prev} & Keluarga` : 'Keluarga ')}
+                                            className="px-2.5 py-1 bg-slate-900 hover:bg-slate-700 text-[10px] text-goldLight rounded-lg border border-slate-700 transition-colors"
+                                        >
+                                            + & Keluarga
+                                        </button>
+                                        <button 
+                                            type="button" 
+                                            onClick={() => setTargetGuest((prev) => prev ? `Sahabat ${prev}` : 'Sahabat ')}
+                                            className="px-2.5 py-1 bg-slate-900 hover:bg-slate-700 text-[10px] text-goldLight rounded-lg border border-slate-700 transition-colors"
+                                        >
+                                            + Sahabat
+                                        </button>
+                                        {targetGuest && (
+                                            <button 
+                                                type="button" 
+                                                onClick={() => setTargetGuest('')}
+                                                className="px-2 py-1 bg-red-900/40 hover:bg-red-900/80 text-[10px] text-red-300 rounded-lg border border-red-800/60 ml-auto transition-colors"
+                                            >
+                                                Hapus
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="flex items-center justify-between mb-1">
+                                        <label className="block text-xs font-medium text-slate-300">
+                                            Nomor WhatsApp Tujuan (Opsional)
+                                        </label>
+                                        <button
+                                            type="button"
+                                            onClick={handlePickContact}
+                                            className="inline-flex items-center gap-1.5 text-[11px] font-medium text-gold hover:text-goldLight bg-slate-900 hover:bg-slate-700 px-2.5 py-1 rounded-lg border border-gold/40 transition-all shadow-sm active:scale-95 cursor-pointer"
+                                            title="Buka kontak dari ponsel Anda"
+                                        >
+                                            <i className="fas fa-address-book text-gold"></i>
+                                            <span>Kontak Ponsel</span>
+                                        </button>
+                                    </div>
+                                    <div className="relative">
+                                        <input 
+                                            type="tel"
+                                            placeholder="Contoh: 081234567890"
+                                            value={targetPhone}
+                                            onChange={(e) => setTargetPhone(e.target.value)}
+                                            className="w-full bg-slate-900/80 border border-slate-700 rounded-xl pl-4 pr-10 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-gold"
+                                        />
+                                        {targetPhone && (
+                                            <button
+                                                type="button"
+                                                onClick={() => setTargetPhone('')}
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 text-xs"
+                                                title="Hapus nomor"
+                                            >
+                                                <i className="fas fa-times-circle"></i>
+                                            </button>
+                                        )}
+                                    </div>
+                                    <div className="flex justify-between items-center mt-1">
+                                        <p className="text-[10px] text-slate-500">
+                                            {targetPhone ? 'Nomor siap dikirim.' : 'Kosongkan jika ingin memilih kontak langsung di WhatsApp.'}
+                                        </p>
+                                        {(targetGuest || targetPhone) && (
+                                            <button
+                                                type="button"
+                                                onClick={handleSaveCurrentContact}
+                                                className="text-[10px] text-gold/80 hover:text-gold underline flex items-center gap-1 cursor-pointer"
+                                            >
+                                                <i className="fas fa-bookmark text-[9px]"></i> Simpan Kontak Ini
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Hasil Link Khusus Tamu */}
+                            <div className="bg-slate-900 p-4 rounded-xl border border-slate-700/80 mt-4">
+                                <p className="text-[11px] text-slate-400 mb-1 font-medium">Tautan Undangan Khusus:</p>
+                                <p className="font-mono text-xs text-gold break-all mb-3 select-all">
+                                    {generatedLink}
+                                </p>
+                                <div className="flex flex-wrap gap-2">
+                                    <button 
+                                        onClick={handleCopyLink}
+                                        className="bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold py-2 px-4 rounded-lg flex items-center gap-1.5 transition-all"
+                                    >
+                                        <i className={`fas ${copied ? 'fa-check text-green-400' : 'fa-copy'}`}></i>
+                                        {copied ? 'Tersalin!' : 'Salin Tautan'}
+                                    </button>
+                                    <button 
+                                        onClick={handleSendWhatsApp}
+                                        className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold py-2 px-4 rounded-lg flex items-center gap-1.5 transition-all shadow-md"
+                                    >
+                                        <i className="fab fa-whatsapp text-sm"></i>
+                                        Kirim ke WhatsApp
+                                    </button>
+                                    <a 
+                                        href={generatedLink} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className="bg-navy hover:bg-navyLight border border-gold/30 text-gold text-xs font-semibold py-2 px-4 rounded-lg flex items-center gap-1.5 transition-all ml-auto"
+                                    >
+                                        <i className="fas fa-external-link-alt text-xs"></i> Uji Tampilan Tamu
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        {}
+                        {/* Pengaturan Musik Latar Undangan */}
+                        <div className="bg-slate-800/90 border border-gold/30 rounded-2xl p-6 mb-8 shadow-xl">
+                            <div className="flex items-center gap-2 mb-2">
+                                <i className="fas fa-music text-gold text-lg"></i>
+                                <h2 className="text-base font-semibold text-gold">Pengaturan Musik Latar Undangan</h2>
+                            </div>
+                            <p className="text-xs text-slate-400 mb-4 leading-relaxed">
+                                Pilih lagu pengiring pernikahan yang ingin diputar saat tamu membuka undangan:
+                            </p>
+
+                            <div className="space-y-3">
+                                {MUSIC_OPTIONS.map((item) => {
+                                    const isSelected = selectedMusicUrl === item.url;
+                                    const isPreviewing = previewingUrl === item.url;
+                                    return (
+                                        <div 
+                                            key={item.id}
+                                            className={`p-3.5 rounded-xl border flex flex-wrap items-center justify-between gap-3 transition-all ${isSelected ? 'bg-gold/15 border-gold shadow-md' : 'bg-slate-900/60 border-slate-700/80 hover:border-slate-600'}`}
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs ${isSelected ? 'bg-gold text-navy font-bold' : 'bg-slate-800 text-slate-400'}`}>
+                                                    <i className="fas fa-compact-disc"></i>
+                                                </div>
+                                                <div>
+                                                    <p className={`text-xs font-medium ${isSelected ? 'text-goldLight' : 'text-slate-200'}`}>
+                                                        {item.title}
+                                                    </p>
+                                                    {isSelected && (
+                                                        <span className="text-[10px] text-green-400 font-medium">✓ Sedang Aktif Dipakai</span>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-center gap-2 ml-auto">
+                                                <button
+                                                    onClick={() => handleTogglePreview(item.url)}
+                                                    className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] rounded-lg border border-slate-700 transition-colors flex items-center gap-1.5"
+                                                    title="Dengarkan Cuplikan"
+                                                >
+                                                    <i className={`fas ${isPreviewing ? 'fa-stop text-red-400' : 'fa-play text-gold'}`}></i>
+                                                    {isPreviewing ? 'Stop' : 'Coba'}
+                                                </button>
+
+                                                {!isSelected && (
+                                                    <button
+                                                        onClick={() => handleSaveMusic(item.url, item.title)}
+                                                        className="px-3 py-1.5 bg-gold hover:bg-goldLight text-navy font-semibold text-[11px] rounded-lg transition-colors shadow"
+                                                    >
+                                                        Gunakan Ini
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        {}
+                        {/* Statistik RSVP */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                            <div className="bg-slate-800 p-5 rounded-2xl border border-slate-700">
+                                <p className="text-xs text-slate-400 mb-1">Konfirmasi Hadir</p>
+                                <p className="text-3xl font-bold text-green-400">{hadirCount}</p>
+                            </div>
+                            <div className="bg-slate-800 p-5 rounded-2xl border border-slate-700">
+                                <p className="text-xs text-slate-400 mb-1">Tidak Hadir</p>
+                                <p className="text-3xl font-bold text-red-400">{tidakHadirCount}</p>
+                            </div>
+                            <div className="bg-slate-800 p-5 rounded-2xl border border-slate-700">
+                                <p className="text-xs text-slate-400 mb-1">Masih Ragu</p>
+                                <p className="text-3xl font-bold text-yellow-400">{raguCount}</p>
+                            </div>
+                        </div>
+
+                        <div className="bg-slate-800 rounded-2xl p-6 border border-slate-700">
+                            <h2 className="text-base font-semibold mb-4 text-slate-200">Daftar Tamu & Konfirmasi Kehadiran</h2>
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-left text-xs">
+                                    <thead className="border-b border-slate-700 text-slate-400">
+                                        <tr>
+                                            <th className="py-3 px-4">Nama</th>
+                                            <th className="py-3 px-4">Status</th>
+                                            <th className="py-3 px-4">Jumlah</th>
+                                            <th className="py-3 px-4">Catatan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-slate-700/60">
+                                        {rsvps.map((row) => (
+                                            <tr key={row.id}>
+                                                <td className="py-3 px-4 font-medium text-slate-200">{row.name}</td>
+                                                <td className="py-3 px-4">
+                                                    <span className={`px-2.5 py-1 rounded-full text-[10px] font-semibold ${row.status === 'Hadir' ? 'bg-green-900/60 text-green-300' : row.status === 'Tidak Hadir' ? 'bg-red-900/60 text-red-300' : 'bg-yellow-900/60 text-yellow-300'}`}>
+                                                        {row.status}
+                                                    </span>
+                                                </td>
+                                                <td className="py-3 px-4 text-slate-300">{row.status === 'Hadir' ? row.guests : '-'}</td>
+                                                <td className="py-3 px-4 text-slate-400">{row.message || '-'}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        {}
+                        {showContactModal && (
+                            <div className="fixed inset-0 z-[200] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+                                <div className="bg-slate-900 border border-gold/40 rounded-2xl p-5 max-w-md w-full shadow-2xl text-slate-200">
+                                    <div className="flex justify-between items-center pb-3 border-b border-slate-800 mb-4">
+                                        <div className="flex items-center gap-2">
+                                            <i className="fas fa-address-book text-gold text-lg"></i>
+                                            <h3 className="font-semibold text-sm text-gold">Kontak Ponsel & Buku Tamu</h3>
+                                        </div>
+                                        <button
+                                            onClick={() => setShowContactModal(false)}
+                                            className="text-slate-400 hover:text-white w-7 h-7 rounded-full bg-slate-800 flex items-center justify-center text-xs"
+                                        >
+                                            <i className="fas fa-times"></i>
+                                        </button>
+                                    </div>
+
+                                    {/* Jika perangkat mendukung Contact Picker */}
+                                    {'contacts' in navigator && 'ContactsManager' in window ? (
+                                        <div className="mb-4">
+                                            <button
+                                                onClick={async () => {
+                                                    setShowContactModal(false);
+                                                    try {
+                                                        const contacts = await navigator.contacts.select(['name', 'tel'], { multiple: false });
+                                                        if (contacts && contacts[0]) {
+                                                            if (contacts[0].tel?.[0]) setTargetPhone(contacts[0].tel[0].replace(/[^0-9+]/g, ''));
+                                                            if (contacts[0].name?.[0] && !targetGuest) setTargetGuest(contacts[0].name[0]);
+                                                            showToast("Kontak ponsel berhasil dipilih!");
+                                                        }
+                                                    } catch(e) {}
+                                                }}
+                                                className="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow transition-all"
+                                            >
+                                                <i className="fas fa-mobile-screen text-sm"></i> Buka Kontak Langsung dari HP
+                                            </button>
+                                            <div className="my-3 flex items-center gap-2 text-slate-500 text-[10px]">
+                                                <div className="flex-1 h-px bg-slate-800"></div>
+                                                <span>atau pilih dari kontak tersimpan</span>
+                                                <div className="flex-1 h-px bg-slate-800"></div>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700/80 text-[11px] text-slate-300 mb-4">
+                                            <p className="flex items-center gap-1.5 text-gold font-medium mb-1">
+                                                <i className="fas fa-info-circle"></i> Info Kontak Browser
+                                            </p>
+                                            <p className="text-slate-400 leading-relaxed">
+                                                Pembaca kontak otomatis aktif pada Google Chrome di ponsel Android. Anda juga dapat memilih atau menyimpan kontak cepat di bawah ini:
+                                            </p>
+                                        </div>
+                                    )}
+
+                                    {/* Daftar Kontak Tersimpan */}
+                                    <div className="space-y-2 max-h-60 overflow-y-auto pr-1 custom-scroll">
+                                        {savedContacts.length === 0 ? (
+                                            <p className="text-xs text-slate-500 text-center py-4 italic">
+                                                Belum ada kontak tersimpan.
+                                            </p>
+                                        ) : (
+                                            savedContacts.map((c, i) => (
+                                                <div 
+                                                    key={i} 
+                                                    className="bg-slate-800/90 hover:bg-slate-700/70 p-3 rounded-xl border border-slate-700 flex items-center justify-between gap-2 transition-all cursor-pointer group"
+                                                    onClick={() => handleSelectSavedContact(c)}
+                                                >
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="w-8 h-8 rounded-full bg-gold/15 text-gold flex items-center justify-center text-xs font-bold">
+                                                            <i className="fas fa-user"></i>
+                                                        </div>
+                                                        <div>
+                                                            <p className="text-xs font-semibold text-slate-200 group-hover:text-gold transition-colors">{c.name}</p>
+                                                            <p className="text-[11px] font-mono text-slate-400">{c.phone || '-'}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-[10px] bg-gold/20 text-gold font-medium px-2 py-1 rounded-md">
+                                                            Pilih
+                                                        </span>
+                                                        <button
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleDeleteSavedContact(i);
+                                                            }}
+                                                            className="text-slate-500 hover:text-red-400 text-xs p-1"
+                                                            title="Hapus kontak"
+                                                        >
+                                                            <i className="fas fa-trash-alt"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        )}
+                                    </div>
+                                    
+                                    <div className="mt-4 pt-3 border-t border-slate-800 flex justify-end">
+                                        <button
+                                            onClick={() => setShowContactModal(false)}
+                                            className="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-lg transition-colors"
+                                        >
+                                            Tutup
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [hasOpened, setHasOpened] = useState(false);
+            const [isOpening, setIsOpening] = useState(false);
+            const [guestName, setGuestName] = useState('Tamu Undangan');
+            const [isAdmin, setIsAdmin] = useState(false);
+            const [showAdminAuthModal, setShowAdminAuthModal] = useState(false);
+            const [adminPasswordInput, setAdminPasswordInput] = useState('');
+            const [adminPasswordError, setAdminPasswordError] = useState('');
+            const [showPasswordText, setShowPasswordText] = useState(false);
+
+            const [isPlaying, setIsPlaying] = useState(false);
+            const audioRef = useRef(null);
+
+            // Koleksi Musik Pernikahan Romantis & Elegan
+            const DEFAULT_PLAYLIST = [
+                {
+                    title: "A Thousand Years - Piano & Cello",
+                    url: "https://archive.org/download/20-piano-guys-lord-of-the-rings-the-hobbit/20%20Piano%20Guys%20-%20Christina%20Perri%20-%20A%20Thousand%20Years.mp3"
+                },
+                {
+                    title: "Canon in D Major - Johann Pachelbel",
+                    url: "https://archive.org/download/CanonInD_201705/CanonInD.mp3"
+                },
+                {
+                    title: "Romantic Piano & Strings",
+                    url: "https://archive.org/download/soundcloud-382924121/Romantic_Piano_Wedding_Background_Music_For_Videos__Films.mp3"
+                },
+                {
+                    title: "Cadangan Musik Drive",
+                    url: "https://drive.google.com/uc?export=download&id=1GXj9ifO5hqgk4LP1VHeUBvLEXFWfvbnU"
+                }
+            ];
+
+            const [audioIndex, setAudioIndex] = useState(0);
+            const [activeSongUrl, setActiveSongUrl] = useState(() => {
+                return localStorage.getItem('bonita_tedi_custom_music_url') || DEFAULT_PLAYLIST[0].url;
+            });
+
+            useEffect(() => {
+                const params = new URLSearchParams(window.location.search);
+                if (params.get('admin') === 'true') {
+                    setShowAdminAuthModal(true);
+                }
+                const nameParam = params.get('nama');
+                if (nameParam) {
+                    setGuestName(decodeURIComponent(nameParam));
+                }
+            }, []);
+
+            // Handler verifikasi kata sandi admin
+            const handleAdminLogin = (e) => {
+                if (e) e.preventDefault();
+                const sanitizedInput = adminPasswordInput.trim().toLowerCase();
+                
+                if (sanitizedInput === 'bonita') {
+                    setIsAdmin(true);
+                    setShowAdminAuthModal(false);
+                    setAdminPasswordInput('');
+                    setAdminPasswordError('');
+                    showToast("Login Admin berhasil!");
+                } else {
+                    setAdminPasswordError("Kata sandi salah! Silakan coba lagi.");
+                    showToast("Kata sandi salah!");
+                }
+            };
+
+            useEffect(() => {
+                if (!hasOpened && !isOpening) return;
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, { threshold: 0.1 });
+
+                const elements = document.querySelectorAll('.fade-in-section');
+                elements.forEach(el => observer.observe(el));
+
+                return () => observer.disconnect();
+            }, [hasOpened, isOpening]);
+
+            const handleOpenInvitation = () => {
+                setIsOpening(true);
+
+                if (audioRef.current) {
+                    audioRef.current.play().then(() => {
+                        setIsPlaying(true);
+                    }).catch(() => {
+                        setIsPlaying(false);
+                    });
+                }
+
+                setTimeout(() => {
+                    setHasOpened(true);
+                    window.scrollTo({ top: 0, behavior: 'instant' });
+                }, 1300);
+            };
+
+            const toggleMusic = () => {
+                if (!audioRef.current) return;
+                if (isPlaying) {
+                    audioRef.current.pause();
+                    setIsPlaying(false);
+                    showToast("Musik dijeda");
+                } else {
+                    audioRef.current.play().then(() => {
+                        setIsPlaying(true);
+                        showToast("Memutar alunan musik pernikahan");
+                    }).catch(() => {});
+                }
+            };
+
+            const handleNextTrack = () => {
+                const nextIdx = (audioIndex + 1) % DEFAULT_PLAYLIST.length;
+                setAudioIndex(nextIdx);
+                const nextTrack = DEFAULT_PLAYLIST[nextIdx];
+                setActiveSongUrl(nextTrack.url);
+                if (audioRef.current) {
+                    audioRef.current.src = nextTrack.url;
+                    audioRef.current.play().then(() => {
+                        setIsPlaying(true);
+                        showToast(`Memutar: ${nextTrack.title}`);
+                    }).catch(() => {});
+                }
+            };
+
+            const handleAudioError = () => {
+                if (audioIndex < DEFAULT_PLAYLIST.length - 1) {
+                    const nextIdx = audioIndex + 1;
+                    setAudioIndex(nextIdx);
+                    const nextTrack = DEFAULT_PLAYLIST[nextIdx];
+                    setActiveSongUrl(nextTrack.url);
+                    if (audioRef.current) {
+                        audioRef.current.src = nextTrack.url;
+                        if (isPlaying) {
+                            audioRef.current.play().catch(() => {});
+                        }
+                    }
+                }
+            };
+
+            // Jika mode admin aktif, tampilkan langsung Dashboard Admin
+            if (isAdmin) {
+                return <AdminDashboard onBack={() => setIsAdmin(false)} />;
+            }
+
+            const currentTrackInfo = DEFAULT_PLAYLIST[audioIndex] || { title: "Musik Pernikahan" };
+
+            return (
+                <div className="app-container relative overflow-hidden">
+                    {/* Elemen Audio Latar Belakang Musik Pernikahan */}
+                    <audio 
+                        ref={audioRef}
+                        src={activeSongUrl}
+                        preload="auto"
+                        loop
+                        onError={handleAudioError}
+                    />
+
+                    {/* Halaman Utama Undangan */}
+                    {(isOpening || hasOpened) && (
+                        <div className="relative bg-cream animate-hero-reveal">
+                            <Hero />
+                            <Greeting />
+                            <EventDetails />
+                            <Countdown />
+                            <Gallery />
+                            <RSVP />
+                            <Wishes />
+                            <WeddingGift />
+                            <Footer onOpenAdmin={() => {
+                                setShowAdminAuthModal(true);
+                                setAdminPasswordInput('');
+                                setAdminPasswordError('');
+                            }} />
+                            <FloatingAudio 
+                                isPlaying={isPlaying} 
+                                onToggle={toggleMusic} 
+                                currentTrack={currentTrackInfo}
+                                onNextTrack={handleNextTrack}
+                            />
+                        </div>
+                    )}
+
+                    {/* Halaman Sampul Depan */}
+                    {!hasOpened && (
+                        <div className={`fixed inset-0 z-50 max-w-[480px] mx-auto cover-wrapper ${isOpening ? 'opening' : ''}`}>
+                            <Cover 
+                                onOpen={handleOpenInvitation} 
+                                guestName={guestName}
+                                isOpening={isOpening}
+                            />
+                        </div>
+                    )}
+
+                    {}
+                    {/* Modal Proteksi Kata Sandi Admin */}
+                    {showAdminAuthModal && (
+                        <div className="fixed inset-0 z-[200] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+                            <div className="bg-slate-900 border border-gold/40 rounded-2xl p-6 max-w-sm w-full shadow-2xl text-slate-100 relative animate-hero-reveal">
+                                <button 
+                                    onClick={() => {
+                                        setShowAdminAuthModal(false);
+                                        setAdminPasswordInput('');
+                                        setAdminPasswordError('');
+                                    }}
+                                    className="absolute top-4 right-4 text-slate-400 hover:text-white w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-xs transition-colors"
+                                    title="Tutup"
+                                >
+                                    <i className="fas fa-times"></i>
+                                </button>
+                                
+                                <div className="text-center mb-5">
+                                    <div className="w-12 h-12 bg-gold/15 text-gold rounded-full flex items-center justify-center mx-auto mb-3 text-xl border border-gold/30">
+                                        <i className="fas fa-lock"></i>
+                                    </div>
+                                    <h3 className="font-serif text-xl font-bold text-gold">Akses Dashboard Admin</h3>
+                                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                                        Halaman ini dilindungi. Masukkan kata sandi admin untuk melanjutkan.
+                                    </p>
+                                </div>
+
+                                <form onSubmit={handleAdminLogin} className="space-y-4">
+                                    <div>
+                                        <label className="block text-xs font-medium text-slate-300 mb-1.5 ml-1">
+                                            Kata Sandi Admin
+                                        </label>
+                                        <div className="relative">
+                                            <input 
+                                                type={showPasswordText ? "text" : "password"}
+                                                required
+                                                autoFocus
+                                                placeholder="Masukkan kata sandi..."
+                                                value={adminPasswordInput}
+                                                onChange={(e) => {
+                                                    setAdminPasswordInput(e.target.value);
+                                                    if (adminPasswordError) setAdminPasswordError('');
+                                                }}
+                                                className="w-full bg-slate-800/90 border border-slate-700 rounded-xl pl-4 pr-10 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-gold transition-colors"
+                                            />
+                                            <button 
+                                                type="button"
+                                                onClick={() => setShowPasswordText(!showPasswordText)}
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-gold text-xs transition-colors"
+                                                title={showPasswordText ? "Sembunyikan Sandi" : "Tampilkan Sandi"}
+                                            >
+                                                <i className={`fas ${showPasswordText ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                                            </button>
+                                        </div>
+                                        {adminPasswordError && (
+                                            <p className="text-[11px] text-rose-400 mt-1.5 ml-1 flex items-center gap-1">
+                                                <i className="fas fa-exclamation-circle text-[10px]"></i> {adminPasswordError}
+                                            </p>
+                                        )}
+                                    </div>
+
+                                    <div className="flex gap-2 pt-2">
+                                        <button 
+                                            type="button"
+                                            onClick={() => {
+                                                setShowAdminAuthModal(false);
+                                                setAdminPasswordInput('');
+                                                setAdminPasswordError('');
+                                            }}
+                                            className="w-1/2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold py-2.5 px-4 rounded-xl text-xs transition-colors"
+                                        >
+                                            Batal
+                                        </button>
+                                        <button 
+                                            type="submit"
+                                            className="w-1/2 bg-gradient-to-r from-gold to-goldDark hover:brightness-110 active:scale-95 text-navy font-semibold py-2.5 px-4 rounded-xl text-xs transition-all shadow-lg flex items-center justify-center gap-1.5"
+                                        >
+                                            <i className="fas fa-key text-[10px]"></i> Masuk
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
